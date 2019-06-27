@@ -13,10 +13,18 @@ namespace BlobCounter
     public partial class Form2 : Form
     {
         public string[] imageNames;
-        public Form2()
+        public Form2(string[] imageNames)
         {
             InitializeComponent();
-            
+            this.imageNames = imageNames;
+            foreach (var image in this.imageNames)
+            {
+                var label = new Label()
+                {
+                    Text = "Processing..."
+                };
+                processPanel.Controls.Add(label);
+            }
         }
 
         private void Label1_Click(object sender, EventArgs e)
@@ -32,6 +40,10 @@ namespace BlobCounter
 
         private async void Button1_Click(object sender, EventArgs e)
         {
+            foreach (var image in imageNames)
+            {
+                await ProcessImage(image);
+            }
             string result = await ProcessImage(@"E:\BlobCounter\image2.jpg");
             Console.WriteLine(result);
         }

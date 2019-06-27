@@ -12,7 +12,7 @@ namespace BlobCounter
 {
     public partial class Form1 : Form
     {
-        private string[] imageNames;
+        private static string[] imageNames;
         public Form1()
         {
             InitializeComponent();
@@ -58,10 +58,7 @@ namespace BlobCounter
 
         private void NextButton1_Click(object sender, EventArgs e)
         {
-            var f2 = new Form2
-            {
-                imageNames = imageNames
-            };
+            var f2 = new Form2(imageNames);
             f2.ShowDialog();
         }
     }
