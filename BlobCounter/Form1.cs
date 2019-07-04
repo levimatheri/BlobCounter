@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,11 @@ namespace BlobCounter
     public partial class Form1 : Form
     {
         private static string[] imageNames;
+        private static Dictionary<string, string> imagesDict;
         public Form1()
         {
             InitializeComponent();
+            imagesDict = new Dictionary<string, string>();
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -29,17 +32,21 @@ namespace BlobCounter
             if (result == DialogResult.OK)
             {
                 imageNames = ofd.FileNames;
+                
 
                 int x = 20;
                 int y = 20;
                 int maxHeight = -1;
                 foreach (var image in imageNames)
                 {
-                    PictureBox pb = new PictureBox();
-                    pb.Size = new System.Drawing.Size(100, 100);
-                    pb.Image = Image.FromFile(image);
-                    pb.Location = new Point(x, y);
-                    pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                    imagesDict[image] = "Processing...";
+                    PictureBox pb = new PictureBox
+                    {
+                        Size = new Size(100, 100),
+                        Image = Image.FromFile(image),
+                        Location = new Point(x, y),
+                        SizeMode = PictureBoxSizeMode.StretchImage
+                    };
                     x += pb.Width + 10;
                     maxHeight = Math.Max(pb.Height, maxHeight);
                     if (x > this.ClientSize.Width - 100)
@@ -58,7 +65,7 @@ namespace BlobCounter
 
         private void NextButton1_Click(object sender, EventArgs e)
         {
-            var f2 = new Form2(imageNames);
+            var f2 = new Form2(imagesDict);
             f2.ShowDialog();
         }
     }

@@ -17,7 +17,7 @@ namespace BlobCounter
             var start = new ProcessStartInfo
             {
                 FileName = userHome + @"\AppData\Local\Programs\Python\Python36\python.exe",
-                Arguments = string.Format("{0} {1}", @"E:\blobcounter-python\countBlobs.py", path),
+                Arguments = string.Format("{0} {1}", @"..\..\..\countBlobs.py", path),
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true

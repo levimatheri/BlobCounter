@@ -30,44 +30,48 @@ namespace BlobCounter
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.processPanel = new System.Windows.Forms.Panel();
+            this.doneLabel = new System.Windows.Forms.Label();
+            this.processPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
-            // button1
+            // doneLabel
             // 
-            this.button1.Location = new System.Drawing.Point(519, 319);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Process";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.doneLabel.AutoSize = true;
+            this.doneLabel.Location = new System.Drawing.Point(94, 422);
+            this.doneLabel.Name = "doneLabel";
+            this.doneLabel.Size = new System.Drawing.Size(41, 13);
+            this.doneLabel.TabIndex = 2;
+            this.doneLabel.Text = "DONE!";
+            this.doneLabel.Visible = false;
             // 
             // processPanel
             // 
-            this.processPanel.Location = new System.Drawing.Point(12, 12);
+            this.processPanel.AutoScroll = true;
+            this.processPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.processPanel.Location = new System.Drawing.Point(13, 22);
             this.processPanel.Name = "processPanel";
-            this.processPanel.Size = new System.Drawing.Size(499, 266);
-            this.processPanel.TabIndex = 1;
+            this.processPanel.Size = new System.Drawing.Size(980, 372);
+            this.processPanel.TabIndex = 3;
+            this.processPanel.WrapContents = false;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(606, 450);
+            this.ClientSize = new System.Drawing.Size(1019, 450);
             this.Controls.Add(this.processPanel);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.doneLabel);
             this.Name = "Form2";
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel progressTable = new TableLayoutPanel();
-        private Button button1;
-        private Panel processPanel;
+        private Label doneLabel;
+        private FlowLayoutPanel processPanel;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,40 +13,72 @@ namespace BlobCounter
 {
     public partial class Form2 : Form
     {
-        public string[] imageNames;
-        public Form2(string[] imageNames)
+        public Dictionary<string, string> imagesDict;
+        
+        public Form2(Dictionary<string, string> imagesDict)
         {
             InitializeComponent();
-            this.imageNames = imageNames;
-            foreach (var image in this.imageNames)
+            this.imagesDict = imagesDict;
+            var xFile = 20;
+            var xMessage = 150;
+            var yFile = 50;
+            var yMessage = 50;
+            var index = 0;
+            foreach (var imageItem in this.imagesDict)
             {
-                var label = new Label()
+                var fileLabel = new Label
                 {
-                    Text = "Processing..."
+                    Text = Path.GetFileNameWithoutExtension(imageItem.Key),
+                    Location = new Point(xFile,yFile)
+                   //Width = 100
                 };
-                processPanel.Controls.Add(label);
+                var messageLabel = new Label
+                {
+                    AutoSize = false,
+                    TextAlign = ContentAlignment.MiddleRight,
+                    Name = index.ToString(),
+                    Text = "Processing...",
+                    Location = new Point(xMessage, yMessage)
+                    //Width = 100
+                };
+                yFile += 40;
+                yMessage += 40;
+                processPanel.Controls.Add(fileLabel);
+                processPanel.Controls.Add(messageLabel);
+                index++;
             }
+
+            RunImageProcessing();
         }
 
-        private void Label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private async Task<string> ProcessImage(string imagePath)
+        private async Task<(string,string)> ProcessImage(string imagePath, string taskId)
         {
             var count = await Task.Run(() => Proxy.CallPython(imagePath));
-            return count;
+            return (count, taskId);
         }
 
-        private async void Button1_Click(object sender, EventArgs e)
+        private async void RunImageProcessing()
         {
-            foreach (var image in imageNames)
+            var tasks = new List<Task<(string, string)>>();
+            var index = 0;
+            foreach (var image in imagesDict)
             {
-                await ProcessImage(image);
+                tasks.Add(ProcessImage(image.Key, index.ToString()));
+                index++;
             }
-            string result = await ProcessImage(@"E:\BlobCounter\image2.jpg");
-            Console.WriteLine(result);
+
+            foreach (var task in await Task.WhenAll(tasks))
+            {
+                if (!string.IsNullOrEmpty(task.Item1))
+                {
+                    var messageLabel = (Label)Controls.Find(task.Item2, true)[0];
+
+                    messageLabel.Text = task.Item1;
+                }
+            }
+            doneLabel.Visible = true;
+            //string result = await ProcessImage(@"E:\BlobCounter\image2.jpg");
+            //Console.WriteLine(result);
         }
 
         private void Form2_Load(object sender, EventArgs e)

@@ -24,22 +24,22 @@ def get_count(path):
 
         dst_color = cv2.cvtColor(dst, cv2.COLOR_GRAY2RGB)
         contours, hierarchy = cv2.findContours(dst, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(dst_color, contours, -1, (0,0,255), 1)
-        cv2.imshow("contours", dst_color)
-        cv2.waitKey()
-        print("Found {} eggs".format(len(contours)))
+        # cv2.drawContours(dst_color, contours, -1, (0,0,255), 1)
+        # cv2.imshow("contours", dst_color)
+        # cv2.waitKey()
+        #print("Found {} eggs".format(len(contours)))
 
         contour_list = []
         for contour in contours:
                 approx = cv2.approxPolyDP(contour,0.01*cv2.arcLength(contour,True),True)
                 area = cv2.contourArea(contour)
-                if ((len(approx) > 1) & (area > 0.5) ):
+                if ((len(approx) > 1) & (area > 0.5 )):
                         contour_list.append(contour)
 
         cv2.drawContours(dst_color, contour_list, -1, (0,255,0), 1)
         cv2.imshow("contours", dst_color)
         cv2.waitKey()
-        print("Found {} eggs".format(len(contour_list) -1)) # -1 for window
+        print(len(contour_list)) # -1 for window
 
 def main():
     if len(sys.argv) >= 1:
